@@ -1,0 +1,40 @@
+<launch>
+    <!-- Common settings -->
+    <arg name="rgb_topic" default="/camera/rgb/image/compressed" />
+    <arg name="seg_topic" default="/camera/seg/image/compressed" />
+    <arg name="cmd_topic" default="/cmd_vel" />
+    <arg name="queue_size" default="10" />
+    <arg name="is_show_image" default="true" />
+    <arg name="use_jit" default="true" />
+    <arg name="model_path" default="/home/ssdf/workspace/src/lane-seg/data/baseline_jit.pth" />
+    <!-- uncomment this if use_jit is false -->
+    <!-- <arg name="model_path" default="/home/ssdf/workspace/src/lane-seg/data/baseline.pth" /> -->
+
+    <!-- This argument is fixed -->
+    <arg name="adapter" value="uit" />
+
+    <!-- UIT's specific settings -->
+    <arg name="uit_hostname" default="0.0.0.0" />
+    <arg name="uit_port" default="4567" />
+
+    <!-- Start node -->
+    <node pkg="sim_adapter" name="sim_adapter_node" type="node.py" required="true" output="screen">
+        <param name="adapter" value="$(arg adapter)" />
+        <param name="rgb_topic" value="$(arg rgb_topic)" />
+        <param name="cmd_topic" value="$(arg cmd_topic)" />
+        <param name="queue_size" value="$(arg queue_size)" />
+        <param name="uit_hostname" value="$(arg uit_hostname)" />
+        <param name="uit_port" value="$(arg uit_port)" />
+        <param name="is_show_image" value="$(arg is_show_image)" />
+    </node>
+
+    <node pkg="lane_seg" name="lane_seg_node" type="node.py" required="true" output="screen">
+        <param name="rgb_topic" value="$(arg rgb_topic)" />
+        <param name="seg_topic" value="$(arg seg_topic)" />
+        <param name="queue_size" value="$(arg queue_size)" />
+        <param name="is_show_image" value="$(arg is_show_image)" />
+        <param name="use_jit" value="$(arg use_jit)" />
+        <param name="model_path" value="$(arg model_path)" />
+    </node>
+
+</launch>
