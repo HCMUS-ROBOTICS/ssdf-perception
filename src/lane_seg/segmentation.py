@@ -44,7 +44,7 @@ class Segmentation():
 
         queue_size = rospy.get_param('~queue_size', default=10)
 
-        self.rgb_sub = rospy.Subscriber(rgb_topic, CompressedImage, self.callback_rgb_image)
+        self.rgb_sub = rospy.Subscriber(rgb_topic, CompressedImage, self.callback_rgb_image, queue_size=1, buff_size=2**24)
         self.seg_pub = rospy.Publisher(seg_topic, CompressedImage, queue_size=queue_size)
 
     def set_model(self, model: Model):
