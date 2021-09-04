@@ -49,8 +49,6 @@ void WindowExtractImpl::update()
 
     birdview(cv::Rect(0, 0, birdview.cols, dropTop)) = cv::Scalar{0};
 
-    // cv::threshold(birdview, birdview, 127, 255, cv::THRESH_TOZERO);
-
     left.update(birdview);
     right.update(birdview);
 
