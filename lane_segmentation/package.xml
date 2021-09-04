@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>lane_seg</name>
+  <name>lane_segmentation</name>
   <version>0.0.0</version>
   <description>The lane segmentation package</description>
 
