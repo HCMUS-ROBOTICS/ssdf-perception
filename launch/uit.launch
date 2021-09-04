@@ -6,28 +6,23 @@
     <arg name="queue_size" default="10" />
     <arg name="is_show_image" default="true" />
     <arg name="use_jit" default="true" />
-    <arg name="model_path" default="/home/ssdf/workspace/src/lane-seg/data/baseline_jit.pth" />
-    <!-- uncomment this if use_jit is false -->
-    <!-- <arg name="model_path" default="/home/ssdf/workspace/src/lane-seg/data/baseline.pth" /> -->
-
-    <!-- This argument is fixed -->
-    <arg name="adapter" value="uit" />
+    <arg name="model_path" default="$(find lane_seg)/data/baseline_jit.pth" />
 
     <!-- UIT's specific settings -->
     <arg name="uit_hostname" default="0.0.0.0" />
     <arg name="uit_port" default="4567" />
 
-    <!-- Start node -->
-    <node pkg="sim_adapter" name="sim_adapter_node" type="node.py" required="true" output="screen">
-        <param name="adapter" value="$(arg adapter)" />
-        <param name="rgb_topic" value="$(arg rgb_topic)" />
-        <param name="cmd_topic" value="$(arg cmd_topic)" />
-        <param name="queue_size" value="$(arg queue_size)" />
-        <param name="uit_hostname" value="$(arg uit_hostname)" />
-        <param name="uit_port" value="$(arg uit_port)" />
-        <param name="is_show_image" value="$(arg is_show_image)" />
-    </node>
+    <!-- Include launch files -->
+    <include file="$(find sim_adapter)/launch/uit.launch">
+        <arg name="rgb_topic" value="$(arg rgb_topic)" />
+        <arg name="cmd_topic" value="$(arg cmd_topic)" />
+        <arg name="queue_size" value="$(arg queue_size)" />
+        <arg name="uit_hostname" value="$(arg uit_hostname)" />
+        <arg name="uit_port" value="$(arg uit_port)" />
+        <arg name="is_show_image" value="$(arg is_show_image)" />
+    </include>
 
+    <!-- Start node -->
     <node pkg="lane_seg" name="lane_seg_node" type="node.py" required="true" output="screen">
         <param name="rgb_topic" value="$(arg rgb_topic)" />
         <param name="seg_topic" value="$(arg seg_topic)" />
