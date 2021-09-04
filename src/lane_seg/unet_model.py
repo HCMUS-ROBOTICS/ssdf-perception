@@ -30,7 +30,7 @@ class UnetModel(Model):
             self.model = torch.jit.load(model_path)
         else:
             self.model = MobileUnet()
-            weight = torch.load(model_path, map_location='cpu')
+            weight = torch.load(model_path, map_location='cpu')['model_state_dict']
             self.model.load_state_dict(weight)
 
         self.model = self.model.to(self.device)
