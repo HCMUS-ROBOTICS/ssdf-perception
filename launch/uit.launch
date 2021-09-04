@@ -7,8 +7,6 @@
     <arg name="is_show_image" default="true" />
     <arg name="use_jit" default="true" />
     <arg name="model_path" default="$(find lane_seg)/data/baseline_jit.pth" />
-    <!-- uncomment this if use_jit is false -->
-    <!-- <arg name="model_path" default="$(find lane_seg)/data/baseline.pth" /> -->
 
     <!-- UIT's specific settings -->
     <arg name="uit_hostname" default="0.0.0.0" />

@@ -19,3 +19,8 @@ You can run from a launch file for UIT simulation (please see the launch file an
 ```bash
 roslaunch lane_seg uit.launch
 ```
+
+If you want to run lane segmentation without using PyTorch JIT:
+```bash
+roslaunch lane_seg uit.launch use_jit:=false model_path:=/path/to/model/weight
+```
