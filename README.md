@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 ## Mobilenet Unet in Pytorch
 
-You can run from a launch file for UIT simulation (please see the launch file and override the arguments if need):
+You can run from a launch file for UIT simulation. It will load a TorchScript model located at `<package_dir>/data/baseline_jit.pth`. Please see the launch file and override the arguments if need:
 ```bash
 roslaunch lane_seg uit.launch
 ```
