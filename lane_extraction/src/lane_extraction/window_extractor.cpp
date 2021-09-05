@@ -72,9 +72,9 @@ void WindowExtractImpl::update()
 
 //////////////////////////////////////////////////////////////////////////////
 
-void LaneLine::update(const cv::Mat &birdview)
+void LaneLine::update(const cv::Mat &lineImage)
 {
-    this->birdview = birdview.clone();
+    this->lineImage = lineImage.clone();
 
     if (this->isFound())
     {
@@ -116,7 +116,7 @@ void LaneLine::track()
 
     for (cv::Point2i &center : points)
     {
-        if (updateNewCenter(birdview, center, nullptr))
+        if (updateNewCenter(lineImage, center, nullptr))
         {
             trackingPoints.push_back(center);
         }
@@ -132,7 +132,7 @@ void LaneLine::track()
 
     params = polyfit(trackingPoints, this->POLY_FIT_DEGREE);
     trackingPoints.clear();
-    for (int y = birdview.rows - 1; y > 0; y -= H_TRACKING)
+    for (int y = lineImage.rows - 1; y > 0; y -= H_TRACKING)
     {
         trackingPoints.push_back({0, y});
     }
@@ -204,7 +204,7 @@ bool LaneLine::updateNewCenter(const cv::Mat &region, cv::Point &center, int *co
 bool LaneLine::findBeginPoint(cv::Point &returnPoint) const
 {
     cv::Rect &&regionRect = getDetectBeginPointRegion();
-    const cv::Mat &&region = birdview(regionRect);
+    const cv::Mat &&region = lineImage(regionRect);
 
     for (int center_y = region.rows - 1 - H_TRACKING / 2; center_y > H_TRACKING / 2 + 1; center_y -= H_TRACKING)
     {
@@ -242,7 +242,7 @@ std::vector<cv::Point> LaneLine::findPoints(const cv::Point &beginPoint, int dir
 
     while (true)
     {
-        if (!updateNewCenter(birdview, nextPoint, nullptr))
+        if (!updateNewCenter(lineImage, nextPoint, nullptr))
         {
             break;
         }

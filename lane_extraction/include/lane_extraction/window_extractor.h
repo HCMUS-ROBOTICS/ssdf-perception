@@ -8,7 +8,7 @@
 class LaneLine
 {
 public:
-    void update(const cv::Mat &birdview);
+    void update(const cv::Mat &lineImage);
     void detect();
     void track();
 
@@ -17,14 +17,14 @@ public:
         return this->params;
     }
 
-    inline cv::Mat getBirdviewImage() const
+    inline cv::Mat getLineImage() const
     {
-        return this->birdview;
+        return this->lineImage;
     }
 
     inline cv::Rect getBirdviewRect() const
     {
-        return cv::Rect2i(0, 0, this->birdview.cols - 1, this->birdview.rows - 1);
+        return cv::Rect2i(0, 0, this->lineImage.cols - 1, this->lineImage.rows - 1);
     }
 
     inline bool isFound() const
@@ -49,7 +49,7 @@ protected:
     std::vector<cv::Point> findPoints(const cv::Point &beginPoint, int direct) const;
 
 private:
-    cv::Mat birdview;
+    cv::Mat lineImage;
     LanePoints points;
     LaneParams params;
 
@@ -77,8 +77,8 @@ public:
 
     cv::Rect getDetectBeginPointRegion() const
     {
-        const auto &&birdview = this->getBirdviewImage();
-        return cv::Rect{0, 0, birdview.cols / 2, birdview.rows};
+        const auto &&lineImage = this->getLineImage();
+        return cv::Rect{0, 0, lineImage.cols / 2, lineImage.rows};
     }
 
     virtual cv::Point2f calcPerpendicular(const cv::Point2i &point) const override
@@ -104,8 +104,8 @@ public:
 
     virtual cv::Rect getDetectBeginPointRegion() const override
     {
-        const auto &&birdview = this->getBirdviewImage();
-        return cv::Rect{birdview.cols / 2, 0, birdview.cols / 2, birdview.rows};
+        const auto &&lineImage = this->getLineImage();
+        return cv::Rect{lineImage.cols / 2, 0, lineImage.cols / 2, lineImage.rows};
     }
 
     virtual cv::Point2f calcPerpendicular(const cv::Point2i &point) const override
