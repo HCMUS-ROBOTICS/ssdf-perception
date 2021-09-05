@@ -44,17 +44,19 @@ void WindowExtractImpl::update()
         return;
     }
 
-    cv::Mat birdview, birdTransform;
-    std::tie(birdview, birdTransform) = birdviewTransformation(this->_laneSegImage, birdwidth, birdheight,
-                                                               skyline, offsetLeft, offsetRight);
-
-    birdview(cv::Rect(0, 0, birdview.cols, dropTop)) = cv::Scalar{0};
-
-    left.update(birdview);
-    right.update(birdview);
+    cv::Mat lineImage = this->_laneSegImage;
+    if (IS_USE_BIRDVIEW)
+    {
+        cv::Mat birdTransform;
+        std::tie(lineImage, birdTransform) = birdviewTransformation(this->_laneSegImage, birdwidth, birdheight,
+                                                                    skyline, offsetLeft, offsetRight);
+        lineImage(cv::Rect(0, 0, lineImage.cols, dropTop)) = cv::Scalar{0};
+    }
+    left.update(lineImage);
+    right.update(lineImage);
 
     cv::Mat debugImage;
-    cv::cvtColor(birdview, debugImage, cv::COLOR_GRAY2BGR);
+    cv::cvtColor(lineImage, debugImage, cv::COLOR_GRAY2BGR);
 
     for (const auto &point : left.getPoints())
     {

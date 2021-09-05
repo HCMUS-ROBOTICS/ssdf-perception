@@ -144,6 +144,7 @@ private:
     cv::Mat _laneSegImage;
 
     // Bird view configuration
+    const bool IS_USE_BIRDVIEW = true;
     int dropTop = 0;
     int offsetLeft = 85;
     int offsetRight = 85;
