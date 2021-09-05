@@ -57,7 +57,8 @@ void evalPoly(const LaneParams &params, LanePoints &points)
     }
 }
 
-cv::Mat birdviewTransformation(const cv::Mat &src, int birdwidth, int birdheight, int skyline, int offsetLeft, int offsetRight, cv::Mat &returnM)
+std::pair<cv::Mat, cv::Mat> birdviewTransformation(const cv::Mat &src, int birdwidth, int birdheight,
+                                                   int skyline, int offsetLeft, int offsetRight)
 {
     int W = src.cols;
     int H = src.rows;
@@ -74,9 +75,8 @@ cv::Mat birdviewTransformation(const cv::Mat &src, int birdwidth, int birdheight
         cv::Point(offsetLeft, H - 1),
         cv::Point(W - offsetRight, H - 1)};
 
-    returnM = cv::getPerspectiveTransform(inQuad, outQuad);
+    cv::Mat M = cv::getPerspectiveTransform(inQuad, outQuad);
     cv::Mat resultBirdview(birdheight, birdwidth, src.type());
-    cv::warpPerspective(src, resultBirdview, returnM, resultBirdview.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
-
-    return resultBirdview;
+    cv::warpPerspective(src, resultBirdview, M, resultBirdview.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+    return std::make_pair(resultBirdview, M);
 }

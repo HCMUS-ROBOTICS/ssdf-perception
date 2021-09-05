@@ -44,8 +44,9 @@ void WindowExtractImpl::update()
         return;
     }
 
-    cv::Mat birdTransform;
-    cv::Mat birdview = birdviewTransformation(this->_laneSegImage, birdwidth, birdheight, skyline, offsetLeft, offsetRight, birdTransform);
+    cv::Mat birdview, birdTransform;
+    std::tie(birdview, birdTransform) = birdviewTransformation(this->_laneSegImage, birdwidth, birdheight,
+                                                               skyline, offsetLeft, offsetRight);
 
     birdview(cv::Rect(0, 0, birdview.cols, dropTop)) = cv::Scalar{0};
 

@@ -1,3 +1,5 @@
+#include <utility>
+#include <opencv2/core.hpp>
 #include "lane_extraction/interface.h"
 
 /** 
@@ -31,4 +33,15 @@ LaneParams polyfit(const LanePoints &points, size_t degree, LanePoints *refitted
  */
 void evalPoly(const LaneParams &params, LanePoints &points);
 
-cv::Mat birdviewTransformation(const cv::Mat &src, int birdwidth, int birdheight, int skyline, int offsetLeft, int offsetRight, cv::Mat &returnM);
+/**
+ * @brief Birdview Transformation or Top-down transformation using warp persective transform
+ * @param src The image to convert
+ * @param birdwidth the width of the birdview image
+ * @param birdheight the height of the birdview image
+ * @param skyline the \f$y\f$ value indicating how far it can look
+ * @param offsetLeft the offset of the bottom left
+ * @param offsetRight the offset of the bottom right
+ * @return a pair of birdview image and birdview transformation matrix
+ */
+std::pair<cv::Mat, cv::Mat> birdviewTransformation(const cv::Mat &src, int birdwidth, int birdheight,
+                                                   int skyline, int offsetLeft, int offsetRight);
