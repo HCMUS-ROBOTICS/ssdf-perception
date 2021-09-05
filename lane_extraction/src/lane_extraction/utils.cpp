@@ -45,7 +45,7 @@ LaneParams polyfit(const LanePoints &points, size_t degree, LanePoints *refitted
     return params;
 }
 
-void evalPoly(LaneParams &params, LanePoints &points)
+void evalPoly(const LaneParams &params, LanePoints &points)
 {
     for (auto &point : points)
     {

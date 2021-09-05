@@ -15,6 +15,6 @@
  * @return the parameters [a_0, a_1, ..., a_n]
  */
 LaneParams polyfit(const LanePoints &points, size_t degree, LanePoints *refittedPoints = nullptr);
-void evalPoly(LaneParams &params, LanePoints &points);
+void evalPoly(const LaneParams &params, LanePoints &points);
 
 cv::Mat birdviewTransformation(const cv::Mat &src, int birdwidth, int birdheight, int skyline, int offsetLeft, int offsetRight, cv::Mat &returnM);
