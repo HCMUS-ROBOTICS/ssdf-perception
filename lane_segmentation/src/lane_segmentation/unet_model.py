@@ -1,15 +1,15 @@
-from torchvision.transforms.transforms import ToTensor
-import rospy
-from sensor_msgs.msg import CompressedImage
 import cv2
 import numpy as np
+import rospy
 import torch
+from sensor_msgs.msg import CompressedImage
 from torchvision import transforms
 
 from .segmentation import Model
-from .models.mobileunet import MobileUnet
+
 
 class UnetModel(Model):
+    """Lane segmentation using Unet-based model."""
 
     WIN_SHOW_IMAGE = 'Lane Segmentation'
 
@@ -29,6 +29,7 @@ class UnetModel(Model):
         if use_jit:
             self.model = torch.jit.load(model_path)
         else:
+            from .models.mobileunet import MobileUnet
             self.model = MobileUnet()
             weight = torch.load(model_path, map_location='cpu')['model_state_dict']
             self.model.load_state_dict(weight)

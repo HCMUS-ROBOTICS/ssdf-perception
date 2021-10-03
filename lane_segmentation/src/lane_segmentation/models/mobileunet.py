@@ -1,7 +1,7 @@
+from collections import OrderedDict
+
 import torch
 import torch.nn as nn
-import logging
-from collections import OrderedDict
 from torchvision.models import mobilenet_v2
 
 __all__ = ['MobileUnet']
@@ -50,8 +50,9 @@ class InvertedResidual(nn.Module):
         #     return self.conv(x)
         return self.conv(x)
 
+
 class MobileUnet(nn.Module):
-    """Some Information about MobileUnet"""
+    """UNet-based segmentation model using MobileNetV2 as backbone."""
 
     __constants__ = ['mobilenet']
 
@@ -111,7 +112,7 @@ class MobileUnet(nn.Module):
         # print((x3.shape, 'x3'))
         x4 = x = self.down4(x)
         # print((x4.shape, 'x4'))
-        x5 = x = self.down5(x)
+        # x5 = x = self.down5(x)
         # print((x5.shape, 'x5'))
 
         up1 = torch.cat([
@@ -180,10 +181,12 @@ class Up(nn.Module):
             self.in_channels + self.in_concat_channels, self.out_channels)
 
     def forward(self, x1, x2):
-        '''
-        :param x1: feature from previous layer
-        :param x2: feature to concat
-        '''
+        r"""Upsampling module.
+
+        Args:
+            x1: feature from previous layer
+            x2: feature to concat
+        """
         x1 = self.up_conv(x1)
         x = torch.cat([x2, x1], dim=1)
         x = self.double_conv(x)
@@ -203,7 +206,7 @@ class UpConv(nn.Module):
 
 
 class DoubleConv(nn.Module):
-    """(convolution => [BN] => ReLU) * 2"""
+    """(convolution => [BN] => ReLU) * 2."""
 
     def __init__(self, in_channels, out_channels):
         super().__init__()

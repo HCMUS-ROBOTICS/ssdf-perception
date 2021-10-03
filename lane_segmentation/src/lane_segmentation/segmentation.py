@@ -1,13 +1,12 @@
 import rospy
 from sensor_msgs.msg import CompressedImage
 
+
 class Model():
-    r"""
-    This class is to wrap any segmentation model from libraries such as pytorch, tensorflow.
-    """
-    
+    """This class is to wrap any segmentation model from libraries such as pytorch, tensorflow."""
+
     def on_start(self):
-        r"""Starting callback
+        r"""Start callback.
 
         This method is being called before the rospy.spin loop.
 
@@ -17,7 +16,7 @@ class Model():
         pass
 
     def on_stop(self):
-        r"""Exit callback
+        r"""Exit callback.
 
         This method is being called after the rospy.spin loop.
 
@@ -27,7 +26,7 @@ class Model():
         pass
 
     def predict(self, image: CompressedImage):
-        r"""Predict function of the segmentation model
+        r"""Predict function of the segmentation model.
 
         Args:
             image: "CompressedImage" from camera
@@ -35,6 +34,7 @@ class Model():
             seg: "CompressedImage" of the prediction
         """
         pass
+
 
 class Segmentation():
     def __init__(self) -> None:
@@ -44,11 +44,12 @@ class Segmentation():
 
         queue_size = rospy.get_param('~queue_size', default=10)
 
-        self.rgb_sub = rospy.Subscriber(rgb_topic, CompressedImage, self.callback_rgb_image, queue_size=1, buff_size=2**24)
+        self.rgb_sub = rospy.Subscriber(rgb_topic, CompressedImage, self.callback_rgb_image,
+                                        queue_size=1, buff_size=2**24)
         self.seg_pub = rospy.Publisher(seg_topic, CompressedImage, queue_size=queue_size)
 
     def set_model(self, model: Model):
-        r"""Set model for this segmentation
+        r"""Set model for this segmentation.
 
         Args:
             model: an instance of "Model"
@@ -56,7 +57,8 @@ class Segmentation():
         self.model = model
 
     def callback_rgb_image(self, image: CompressedImage):
-        r"""Callback of `rgb_topic`
+        r"""RGB image callback.
+
         This callback will publish the segmentation result to `seg_topic`
 
         Args:
@@ -65,12 +67,11 @@ class Segmentation():
         self.seg_pub.publish(self.model.predict(image))
 
     def run_loop(self):
-        r"""Running loop
+        r"""Run main loop.
 
         This will hang the process to receive as well as publish messages via callbacks
         initialized from the constructor.
         """
-
         self.model.on_start()
         rospy.spin()
         self.model.on_stop()
